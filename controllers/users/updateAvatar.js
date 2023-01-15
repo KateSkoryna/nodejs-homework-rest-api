@@ -15,9 +15,9 @@ const updateAvatar = async (req, res) => {
     await fs.rename(tempUpload, resultUpload);
     const avatarURL = path.join("avatars", avatarName);
     Jimp.read(resultUpload).then((avatar) => {
-      return avatar.resize(250, 400).write(avatarURL);
+      return avatar.resize(250, Jimp.AUTO).write(resultUpload);
     });
-    await User.findByIdAndUpdate(userId, { resultUpload });
+    await User.findByIdAndUpdate(userId, { avatarURL });
     res.json({ avatarURL });
   } catch (error) {
     await fs.unlink(tempUpload);
