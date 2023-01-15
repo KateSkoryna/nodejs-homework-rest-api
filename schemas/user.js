@@ -4,6 +4,7 @@ const user = {
   email: Joi.string().required(),
   password: Joi.string().required(),
   subscription: Joi.string().default("starter").optional(),
+  avatarURL: Joi.string().required(),
 };
 
 const signupUserSchema = Joi.object({
