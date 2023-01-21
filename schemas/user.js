@@ -3,7 +3,11 @@ const Joi = require("joi");
 const user = {
   email: Joi.string().required(),
   password: Joi.string().required(),
-  subscription: Joi.string().default("starter").optional(),
+  subscription: Joi.string()
+    .valid("starter", "pro", "business")
+    .default("starter")
+    .optional(),
+  avatarURL: Joi.string().required(),
 };
 
 const signupUserSchema = Joi.object({
@@ -17,7 +21,14 @@ const loginUserSchema = Joi.object({
   password: user.password,
 }).required();
 
+const updateUserSchema = Joi.object({
+  email: user.email.optional(),
+  password: user.password.optional(),
+  subscription: user.subscription.optional(),
+}).required();
+
 module.exports = {
   signupUserSchema,
   loginUserSchema,
+  updateUserSchema,
 };

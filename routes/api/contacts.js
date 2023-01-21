@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { auth, validation, ctrllWrapper } = require("../../middlewares");
+const { auth, validation, controllerlWrapper } = require("../../middlewares");
 
 const {
   contacts: {
@@ -24,18 +24,28 @@ const contactUpdateValidation = validation(updateContactSchema);
 const contactFavoriteValidation = validation(contactFavoriteSchema);
 const router = express.Router();
 
-router.get("/", auth, ctrllWrapper(getContacts));
-router.get("/:id", auth, ctrllWrapper(getContactById));
-router.delete("/:id", auth, ctrllWrapper(deleteContact));
+router.get("/", auth, controllerlWrapper(getContacts));
+router.get("/:id", auth, controllerlWrapper(getContactById));
+router.delete("/:id", auth, controllerlWrapper(deleteContact));
 
-router.post("/", auth, contactCreateValidation, ctrllWrapper(addNewContact));
+router.post(
+  "/",
+  auth,
+  contactCreateValidation,
+  controllerlWrapper(addNewContact)
+);
 
-router.put("/:id", auth, contactUpdateValidation, ctrllWrapper(updateContact));
+router.put(
+  "/:id",
+  auth,
+  contactUpdateValidation,
+  controllerlWrapper(updateContact)
+);
 router.patch(
   "/:id/favorite",
   auth,
   contactFavoriteValidation,
-  ctrllWrapper(updateContactFavorite)
+  controllerlWrapper(updateContactFavorite)
 );
 
 module.exports = router;
