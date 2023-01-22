@@ -1,40 +1,57 @@
 const express = require("express");
 const {
   validation,
-  controllerlWrapper,
+  controllerWrapper,
   auth,
   upload,
 } = require("../../middlewares");
 const {
-  users: { signup, login, getCurrent, logout, updateUser, updateAvatar },
+  users: {
+    signup,
+    login,
+    getCurrent,
+    logout,
+    updateUser,
+    updateAvatar,
+    verifyEmail,
+    sendVerificationEmail,
+  },
 } = require("../../controllers");
 
 const {
   signupUserSchema,
   loginUserSchema,
   updateUserSchema,
+  verifyEmailSchema,
 } = require("../../schemas");
 const router = express.Router();
 
 const userSignupValidation = validation(signupUserSchema);
 const userLoginValidation = validation(loginUserSchema);
 const userUpdateValidation = validation(updateUserSchema);
+const userMailValidation = validation(verifyEmailSchema);
 
-router.post("/signup", userSignupValidation, controllerlWrapper(signup));
-router.post("/login", userLoginValidation, controllerlWrapper(login));
-router.get("/current", auth, controllerlWrapper(getCurrent));
-router.post("/logout", auth, controllerlWrapper(logout));
+router.post("/signup", userSignupValidation, controllerWrapper(signup));
+router.post("/login", userLoginValidation, controllerWrapper(login));
+router.get("/current", auth, controllerWrapper(getCurrent));
+router.post("/logout", auth, controllerWrapper(logout));
 router.patch(
   "/users",
   auth,
   userUpdateValidation,
-  controllerlWrapper(updateUser)
+  controllerWrapper(updateUser)
 );
 router.patch(
   "/avatars",
   auth,
   upload.single("avatar"),
-  controllerlWrapper(updateAvatar)
+  controllerWrapper(updateAvatar)
+);
+router.get("/verify/:verificationToken", controllerWrapper(verifyEmail));
+router.post(
+  "/verify",
+  userMailValidation,
+  controllerWrapper(sendVerificationEmail)
 );
 
 module.exports = router;
