@@ -6,9 +6,12 @@ const { SECRET_KEY } = require("../../config.js");
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  console.log(user.verify);
-  if (!user || !user.verify || !user.comparePassword(password)) {
-    throw new Unauthorized("Email or password is wrong, or not verified");
+  if (!user.verify) {
+    throw new Unauthorized(" Email is not verified");
+  }
+
+  if (!user || !user.comparePassword(password)) {
+    throw new Unauthorized("Email or password is wrong");
   }
 
   const payload = {

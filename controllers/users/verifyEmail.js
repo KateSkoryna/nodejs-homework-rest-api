@@ -7,7 +7,6 @@ const verifyEmail = async (req, res) => {
   if (!user) {
     throw new NotFound();
   }
-
   const userId = user._id;
   await User.findByIdAndUpdate(userId, {
     verify: true,
