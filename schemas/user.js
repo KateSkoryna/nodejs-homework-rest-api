@@ -7,7 +7,6 @@ const user = {
     .valid("starter", "pro", "business")
     .default("starter")
     .optional(),
-  avatarURL: Joi.string().required(),
 };
 
 const signupUserSchema = Joi.object({
@@ -27,8 +26,13 @@ const updateUserSchema = Joi.object({
   subscription: user.subscription.optional(),
 }).required();
 
+const verifyEmailSchema = Joi.object({
+  email: user.email,
+});
+
 module.exports = {
   signupUserSchema,
   loginUserSchema,
   updateUserSchema,
+  verifyEmailSchema,
 };
